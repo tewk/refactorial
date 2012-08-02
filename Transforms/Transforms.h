@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <clang/AST/ASTContext.h>
 #include <clang/Lex/Lexer.h>
 #include <clang/Rewrite/Rewriter.h>
 #include <clang/Sema/Sema.h>
