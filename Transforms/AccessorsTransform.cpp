@@ -86,7 +86,7 @@ public:
 				
 				string stmts_str, base_str;
 				llvm::raw_string_ostream sstr(stmts_str), base_sstr(base_str);
-				lhs_expr->getBase()->printPretty(base_sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
+				// lhs_expr->getBase()->printPretty(base_sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
 				
 				string getterName = "get" + lhs_expr->getMemberDecl()->getNameAsString();
 				getterName[3] = toupper(getterName[3]);
@@ -107,7 +107,7 @@ public:
 						sstr << base_sstr.str() << "." << setterName << "( ";
 						sstr << base_sstr.str() << "." << getterName << "() ";
 						sstr << BinaryOperator::getOpcodeStr(BinaryOperator::getOpForCompoundAssignment(bin_op->getOpcode())) << " ";
-						bin_op->getRHS()->printPretty(sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
+						// bin_op->getRHS()->printPretty(sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
 						collect(bin_op->getRHS(), PM);
 						sstr << " );\n";
 						insert(top_stmt_within_compound->getLocStart(), sstr.str());
@@ -124,7 +124,7 @@ public:
 						sstr << base_sstr.str() << "." << getterName << "() ";
 						sstr << BinaryOperator::getOpcodeStr(BinaryOperator::getOpForCompoundAssignment(bin_op->getOpcode())) << " ";
 						collect(bin_op->getRHS(), PM);
-						bin_op->getRHS()->printPretty(sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
+						// bin_op->getRHS()->printPretty(sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
 						sstr << " )";
 						replace(bin_op->getSourceRange(), sstr.str());
 					}
@@ -133,7 +133,7 @@ public:
 				{
 					sstr << base_sstr.str() << "." << setterName << "( ";
 					collect(bin_op->getRHS(), PM);
-					bin_op->getRHS()->printPretty(sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
+					// bin_op->getRHS()->printPretty(sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
 					sstr << " )";
 					replace(bin_op->getSourceRange(), sstr.str());
 				}
@@ -161,7 +161,7 @@ public:
 				
 				string base_str;
 				llvm::raw_string_ostream base_sstr(base_str);
-				sub_expr->getBase()->printPretty(base_sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
+				// sub_expr->getBase()->printPretty(base_sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
 				base_str = base_sstr.str();
 				
 				string getterName = "get" + sub_expr->getMemberDecl()->getNameAsString();
@@ -347,7 +347,7 @@ public:
 				
 				string stmts_str, base_str;
 				llvm::raw_string_ostream sstr(stmts_str), base_sstr(base_str);
-				mem_expr->getBase()->printPretty(base_sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
+				// mem_expr->getBase()->printPretty(base_sstr, *ctx, 0, PrintingPolicy(ctx->getLangOpts()));
 				
 				string getterName = "get" + mem_expr->getMemberDecl()->getNameAsString();
 				getterName[3] = toupper(getterName[3]);
