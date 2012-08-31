@@ -15,7 +15,7 @@ using namespace clang;
 
 class MethodMoveTransform : public Transform {
 public:  
-	virtual void HandleTranslationUnit(ASTContext &C) override;
+	virtual void HandleTranslationUnit(ASTContext &C);
 	
   
 protected:

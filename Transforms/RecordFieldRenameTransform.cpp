@@ -8,7 +8,7 @@ using namespace clang;
 
 class RecordFieldRenameTransform : public RenameTransform {
 public:
-  virtual void HandleTranslationUnit(ASTContext &) override;
+  virtual void HandleTranslationUnit(ASTContext &);
   
 protected:
   void collectAndRenameFieldDecl(DeclContext *DC, bool topLevel = false);

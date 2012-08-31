@@ -13,10 +13,12 @@ IF(APPLE)
   # SET(CMAKE_CXX_COMPILER /usr/local/bin/clang++)
   # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ --std=c++0x -I/opt/local/include")
   # SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -stdlib=libc++")
+  SET(CLANG_LIBRARIES clangAnalysis clangAST clangBasic clangDriver clangEdit clangFrontend clangLex clangParse clangRewrite clangSema clangSerialization clangTooling)
 ELSE(APPLE)
   SET(CMAKE_C_COMPILER clang)
   SET(CMAKE_CXX_COMPILER clang++)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  SET(CLANG_LIBRARIES clang)
 ENDIF(APPLE)
 
 FIND_PACKAGE(LLVM REQUIRED)
@@ -28,7 +30,6 @@ INCLUDE_DIRECTORIES(${LLVM_INCLUDE_DIRS} .)
 LINK_DIRECTORIES(${LLVM_LIBRARY_DIRS})
 LLVM_MAP_COMPONENTS_TO_LIBRARIES(REQ_LLVM_LIBRARIES arminfo cellspuinfo cppbackendinfo debuginfo hexagoninfo mblazeinfo mipsinfo msp430info nvptxinfo powerpcinfo sparcinfo x86info xcoreinfo armdesc cellspudesc hexagondesc mblazedesc mipsdesc msp430desc nvptxdesc powerpcdesc sparcdesc x86desc xcoredesc armasmparser asmparser mblazeasmparser mcparser mipsasmparser x86asmparser)
 
-SET(CLANG_LIBRARIES clangAnalysis clangAST clangBasic clangDriver clangEdit clangFrontend clangLex clangParse clangRewrite clangSema clangSerialization clangTooling)
 
 SET(Transforms_sources
   AccessorsTransform.cpp

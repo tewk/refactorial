@@ -49,11 +49,11 @@ private:
 public:
 	TransformAction(transform_creator creator) {tcreator = creator;}
 protected:
-	ASTConsumer *CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) override {
+	ASTConsumer *CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) {
 		return tcreator();
 	}
 
-	virtual bool BeginInvocation(CompilerInstance &CI) override {
+	virtual bool BeginInvocation(CompilerInstance &CI) {
 		CI.getHeaderSearchOpts().AddPath("/usr/local/lib/clang/3.2/include", frontend::System, false, false, false);
 		return true;
 	}

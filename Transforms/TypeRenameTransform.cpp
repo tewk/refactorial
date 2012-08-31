@@ -17,7 +17,7 @@ using namespace clang;
 
 class TypeRenameTransform : public RenameTransform {
 public:
-  virtual void HandleTranslationUnit(ASTContext &C) override;
+  virtual void HandleTranslationUnit(ASTContext &C);
   
 protected:
   void collectRenameDecls(DeclContext *DC, bool topLevel = false);

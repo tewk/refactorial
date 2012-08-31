@@ -14,7 +14,7 @@ private:
 	list<string> fields;
 	ASTContext *ctx;
 public:
-	void HandleTranslationUnit(ASTContext &Ctx) override {
+	void HandleTranslationUnit(ASTContext &Ctx) {
 		fields = TransformRegistry::get().config["Accessors"].as<list<string> >();
 		ctx = &Ctx;
 		collect(ctx->getTranslationUnitDecl());

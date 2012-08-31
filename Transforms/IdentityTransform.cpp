@@ -9,7 +9,7 @@ using namespace clang;
 class IdentityTransform : public Transform {
 public:
 	
-  virtual void HandleTranslationUnit(ASTContext &) override;
+  virtual void HandleTranslationUnit(ASTContext &);
 };
 
 REGISTER_TRANSFORM(IdentityTransform);

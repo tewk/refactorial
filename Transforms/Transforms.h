@@ -23,7 +23,7 @@ class Transform : public clang::SemaConsumer
 {
 protected:
 	clang::Sema *sema;
-	virtual void InitializeSema(clang::Sema &s) override;
+	virtual void InitializeSema(clang::Sema &s);
 	friend class TransformFactory;
 	void insert(clang::SourceLocation loc, std::string text);
 	void replace(clang::SourceRange range, std::string text);
@@ -74,7 +74,7 @@ private:
 	transform_creator tcreator;
 public:
 	TransformFactory(transform_creator creator);
-	clang::FrontendAction *create() override;
+	clang::FrontendAction *create();
 };
 
 #endif

@@ -9,7 +9,7 @@ using namespace clang;
 
 class FunctionRenameTransform : public RenameTransform {
 public:
-  virtual void HandleTranslationUnit(ASTContext &) override;
+  virtual void HandleTranslationUnit(ASTContext &);
   
   
 protected:
