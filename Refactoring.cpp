@@ -183,9 +183,10 @@ int RefactoringTool::run(FrontendActionFactory *ActionFactory) {
   LangOptions DefaultLangOptions;
   DiagnosticOptions DefaultDiagnosticOptions;
   TextDiagnosticPrinter DiagnosticPrinter(llvm::errs(),
-                                          DefaultDiagnosticOptions);
+                                          &DefaultDiagnosticOptions);
   DiagnosticsEngine Diagnostics(
       llvm::IntrusiveRefCntPtr<DiagnosticIDs>(new DiagnosticIDs()),
+      &DefaultDiagnosticOptions,
       &DiagnosticPrinter, false);
   SourceManager Sources(Diagnostics, Tool.getFiles());
   Rewriter Rewrite(Sources, DefaultLangOptions);
