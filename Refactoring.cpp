@@ -181,13 +181,15 @@ Replacements &RefactoringTool::getReplacements() { return Replace; }
 int RefactoringTool::run(FrontendActionFactory *ActionFactory) {
   int Result = Tool.run(ActionFactory);
   LangOptions DefaultLangOptions;
-  DiagnosticOptions DefaultDiagnosticOptions;
-  TextDiagnosticPrinter DiagnosticPrinter(llvm::errs(),
-                                          &DefaultDiagnosticOptions);
-  DiagnosticsEngine Diagnostics(
-      llvm::IntrusiveRefCntPtr<DiagnosticIDs>(new DiagnosticIDs()),
-      &DefaultDiagnosticOptions,
-      &DiagnosticPrinter, false);
+
+  DiagnosticOptions *DefaultDiagnosticOptions = new DiagnosticOptions;
+  TextDiagnosticPrinter *DiagnosticPrinter = 
+    new TextDiagnosticPrinter(llvm::errs(), DefaultDiagnosticOptions);
+  IntrusiveRefCntPtr<clang::DiagnosticIDs> DiagID(new clang::DiagnosticIDs());
+  DiagnosticsEngine Diagnostics(DiagID, 
+                                DefaultDiagnosticOptions, 
+                                DiagnosticPrinter);
+
   SourceManager Sources(Diagnostics, Tool.getFiles());
   Rewriter Rewrite(Sources, DefaultLangOptions);
   if (!applyAllReplacements(Replace, Rewrite)) {
