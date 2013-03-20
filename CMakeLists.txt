@@ -13,7 +13,27 @@ IF(APPLE)
   # SET(CMAKE_CXX_COMPILER /usr/local/bin/clang++)
   # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ --std=c++0x -I/opt/local/include")
   # SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -stdlib=libc++")
-  SET(CLANG_LIBRARIES clangAnalysis clangAST clangBasic clangDriver clangEdit clangFrontend clangLex clangParse clangRewrite clangSema clangSerialization clangTooling)
+  SET(CLANG_LIBRARIES 
+    clangAnalysis
+    clangARCMigrate
+    clangAST
+    clangASTMatchers
+    clangBasic
+    clangCodeGen
+    clangDriver
+    clangEdit
+    clangFrontend
+    clangFrontendTool
+    clangLex
+    clangParse
+    clangRewriteCore
+    clangRewriteFrontend
+    clangSema
+    clangSerialization
+    clangStaticAnalyzerCheckers
+    clangStaticAnalyzerCore
+    clangStaticAnalyzerFrontend
+    clangTooling)
 ELSE(APPLE)
   SET(CMAKE_C_COMPILER clang)
   SET(CMAKE_CXX_COMPILER clang++)
@@ -28,7 +48,7 @@ FIND_LIBRARY(PCRECPP_LIBRARY pcrecpp)
 ADD_DEFINITIONS(${LLVM_DEFINITIONS})
 INCLUDE_DIRECTORIES(${LLVM_INCLUDE_DIRS} .)
 LINK_DIRECTORIES(${LLVM_LIBRARY_DIRS})
-#LLVM_MAP_COMPONENTS_TO_LIBRARIES(REQ_LLVM_LIBRARIES arminfo cellspuinfo cppbackendinfo debuginfo hexagoninfo mblazeinfo mipsinfo msp430info nvptxinfo powerpcinfo sparcinfo x86info xcoreinfo armdesc cellspudesc hexagondesc mblazedesc mipsdesc msp430desc nvptxdesc powerpcdesc sparcdesc x86desc xcoredesc armasmparser asmparser mblazeasmparser mcparser mipsasmparser x86asmparser)
+LLVM_MAP_COMPONENTS_TO_LIBRARIES(REQ_LLVM_LIBRARIES arminfo cellspuinfo cppbackendinfo debuginfo hexagoninfo mblazeinfo mipsinfo msp430info nvptxinfo powerpcinfo sparcinfo x86info xcoreinfo armdesc cellspudesc hexagondesc mblazedesc mipsdesc msp430desc nvptxdesc powerpcdesc sparcdesc x86desc xcoredesc armasmparser asmparser mblazeasmparser mcparser mipsasmparser x86asmparser)
 
 
 SET(Transforms_sources
