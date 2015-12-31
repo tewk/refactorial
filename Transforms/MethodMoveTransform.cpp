@@ -10,6 +10,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <clang/Lex/Preprocessor.h>
 #include <clang/Rewrite/Core/Rewriter.h>
+#include <clang/Frontend/VerifyDiagnosticConsumer.h>
 
 using namespace clang;
 
@@ -67,6 +68,21 @@ void MethodMoveTransform::processDeclContext(DeclContext *DC)
 		}
 	}
 }
+static bool IsFromSameFile(SourceManager &SM, SourceLocation DirectiveLoc,
+                           SourceLocation DiagnosticLoc) {
+	while (DiagnosticLoc.isMacroID())
+		DiagnosticLoc = SM.getImmediateMacroCallerLoc(DiagnosticLoc);
+
+	if (SM.isWrittenInSameFile(DirectiveLoc, DiagnosticLoc))
+		return true;
+
+	const FileEntry *DiagFile = SM.getFileEntryForID(SM.getFileID(DiagnosticLoc));
+	if (!DiagFile && SM.isWrittenInMainFile(DirectiveLoc))
+		return true;
+
+	return (DiagFile == SM.getFileEntryForID(SM.getFileID(DirectiveLoc)));
+}
+
 
 void MethodMoveTransform::processCXXRecordDecl(CXXRecordDecl *CRD)
 {
@@ -120,7 +136,7 @@ void MethodMoveTransform::processCXXRecordDecl(CXXRecordDecl *CRD)
 		// is the inline def outside of the record body? if not, skip
 		// this also requires the check whether both are from the same file
 		auto SLS = S->getLocStart();
-		if (!sema->getSourceManager().isFromSameFile(CRDRBL, SLS)) {
+		if (!IsFromSameFile( sema->getSourceManager(), CRDRBL, SLS)) {
 			continue;
 		}
       
@@ -179,11 +195,10 @@ void MethodMoveTransform::collectNamespaceInfo(DeclContext *DC,
 	// but apparently class Foo is already using namespace B; this will cause
 	// some problem for our namespace replication
   
-	for (auto UI = DC->using_directives_begin(),
-		     UE = DC->using_directives_end(); UI != UE; ++UI) {
+	for (auto UI : DC->using_directives() ) {
   
-		auto UDLS = (*UI)->getLocStart();
-		if (!sema->getSourceManager().isFromSameFile(EL, UDLS)) {
+		auto UDLS = UI->getLocStart();
+		if (!IsFromSameFile( sema->getSourceManager(), EL, UDLS)) {
 			continue;
 		}
     
@@ -191,7 +206,7 @@ void MethodMoveTransform::collectNamespaceInfo(DeclContext *DC,
 			continue;
 		}
          
-		auto ND = (*UI)->getNominatedNamespaceAsWritten();
+		auto ND = UI->getNominatedNamespaceAsWritten();
 		auto N = ND->getNameAsString();
     
 		outHeader += "using namespace ";
@@ -207,7 +222,7 @@ std::string MethodMoveTransform::rewriteMethodInHeader(CXXMethodDecl *M)
   
 	// return type (but no type if ctor or dtor)
 	if (!isa<CXXConstructorDecl>(M) && !isa<CXXDestructorDecl>(M)) {
-		sst << M->getResultType().getAsString();
+		sst << M->getReturnType().getAsString();
 		sst << " ";
 	}
 

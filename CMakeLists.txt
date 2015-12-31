@@ -5,7 +5,7 @@ PROJECT (Refactorial)
 SET(CMAKE_DISABLE_SOURCE_CHANGES ON)
 SET(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 SET(CMAKE_BUILD_TYPE None)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_LINKER_FLAGS} -O0 -g -fno-rtti -fcolor-diagnostics -Wno-c++11-extensions -DBOOST_NO_TYPEID -DBOOST_NO_RTTI")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_LINKER_FLAGS} --std=c++0x -O0 -g -fno-rtti -fcolor-diagnostics -Wno-c++11-extensions -DBOOST_NO_TYPEID -DBOOST_NO_RTTI")
 SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_CXX_LINKER_FLAGS} -g -fno-rtti")
 IF(APPLE)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/local/include")
@@ -14,6 +14,8 @@ IF(APPLE)
   # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ --std=c++0x -I/opt/local/include")
   # SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -stdlib=libc++")
   SET(CLANG_LIBRARIES 
+    LLVMCore
+    LLVMOption
     clangAnalysis
     clangARCMigrate
     clangAST
@@ -26,7 +28,7 @@ IF(APPLE)
     clangFrontendTool
     clangLex
     clangParse
-    clangRewriteCore
+    clangRewrite
     clangRewriteFrontend
     clangSema
     clangSerialization
@@ -48,7 +50,8 @@ FIND_LIBRARY(PCRECPP_LIBRARY pcrecpp)
 ADD_DEFINITIONS(${LLVM_DEFINITIONS})
 INCLUDE_DIRECTORIES(${LLVM_INCLUDE_DIRS} .)
 LINK_DIRECTORIES(${LLVM_LIBRARY_DIRS})
-LLVM_MAP_COMPONENTS_TO_LIBRARIES(REQ_LLVM_LIBRARIES arminfo cellspuinfo cppbackendinfo debuginfo hexagoninfo mblazeinfo mipsinfo msp430info nvptxinfo powerpcinfo sparcinfo x86info xcoreinfo armdesc cellspudesc hexagondesc mblazedesc mipsdesc msp430desc nvptxdesc powerpcdesc sparcdesc x86desc xcoredesc armasmparser asmparser mblazeasmparser mcparser mipsasmparser x86asmparser)
+#LLVM_MAP_COMPONENTS_TO_LIBRARIES(REQ_LLVM_LIBRARIES arminfo cellspuinfo cppbackendinfo debuginfo hexagoninfo mblazeinfo mipsinfo msp430info nvptxinfo powerpcinfo sparcinfo x86info xcoreinfo armdesc cellspudesc hexagondesc mblazedesc mipsdesc msp430desc nvptxdesc powerpcdesc sparcdesc x86desc xcoredesc armasmparser asmparser mblazeasmparser mcparser mipsasmparser x86asmparser)
+LLVM_MAP_COMPONENTS_TO_LIBRARIES(REQ_LLVM_LIBRARIES arminfo cppbackendinfo x86info xcoreinfo armdesc x86desc xcoredesc armasmparser asmparser x86asmparser)
 
 
 SET(Transforms_sources

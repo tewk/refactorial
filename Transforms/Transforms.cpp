@@ -49,12 +49,12 @@ private:
 public:
 	TransformAction(transform_creator creator) {tcreator = creator;}
 protected:
-	ASTConsumer *CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) {
-		return tcreator();
+	std::unique_ptr<ASTConsumer> CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) {
+		return std::unique_ptr<ASTConsumer> ( tcreator() );
 	}
 
 	virtual bool BeginInvocation(CompilerInstance &CI) {
-		CI.getHeaderSearchOpts().AddPath("/usr/local/lib/clang/3.2/include", frontend::System, false, false, false);
+		CI.getHeaderSearchOpts().AddPath("/usr/local/lib/clang/3.2/include", frontend::System, false, false );
 		return true;
 	}
 };

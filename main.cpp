@@ -52,8 +52,8 @@ int main(int argc, char **argv)
 		}
 		
 		//load up the compilation database
-		llvm::OwningPtr<tooling::CompilationDatabase> Compilations(tooling::CompilationDatabase::loadFromDirectory(".", errorMessage));
-		RefactoringTool rt(*Compilations.take(), inputFiles);
+		std::unique_ptr<tooling::CompilationDatabase> Compilations(tooling::CompilationDatabase::loadFromDirectory(".", errorMessage));
+		RefactoringTool rt(*Compilations, inputFiles);
 		
 		TransformRegistry::get().config = configSection["Transforms"];
 		TransformRegistry::get().replacements = &rt.getReplacements();

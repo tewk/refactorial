@@ -157,12 +157,11 @@ bool saveRewrittenFiles(Rewriter &Rewrite) {
     // handle the error cases better).
     const FileEntry *Entry =
         Rewrite.getSourceMgr().getFileEntryForID(I->first);
-    std::string ErrorInfo;
-    llvm::raw_fd_ostream FileStream(
-        Entry->getName(), ErrorInfo, llvm::raw_fd_ostream::F_Binary);
+    std::error_code ErrorInfo;
+    llvm::raw_fd_ostream FileStream( Entry->getName(), ErrorInfo, llvm::sys::fs::F_None);
     llvm::raw_fd_ostream BackupStream(
-	    (std::string(Entry->getName()) + ".orig").c_str(), ErrorInfo, llvm::raw_fd_ostream::F_Binary);
-    if (!ErrorInfo.empty())
+	    (std::string(Entry->getName()) + ".orig").c_str(), ErrorInfo, llvm::sys::fs::F_None);
+    if (ErrorInfo)
       return false;
     BackupStream << Rewrite.getSourceMgr().getBufferData(I->first);
     BackupStream.flush();
