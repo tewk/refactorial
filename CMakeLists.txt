@@ -69,7 +69,11 @@ FOREACH(arg ${Transforms_sources})
   LIST(APPEND sources "Transforms/${arg}")
 ENDFOREACH(arg ${Transforms_sources})
 
-SET(sources ${sources} main.cpp Refactoring.cpp)
+SET(sourcesa ${sources} main.cpp Refactoring.cpp)
+SET(sourcesb ${sources} methodMove.cpp Refactoring.cpp)
 
-ADD_EXECUTABLE (refactorial ${sources} )
+ADD_EXECUTABLE (refactorial ${sourcesa} )
 TARGET_LINK_LIBRARIES (refactorial ${REQ_LLVM_LIBRARIES} ${CLANG_LIBRARIES} ${PCRE_LIBRARY} ${PCRECPP_LIBRARY} yaml-cpp)
+
+ADD_EXECUTABLE (methodMove ${sourcesb} )
+TARGET_LINK_LIBRARIES (methodMove ${REQ_LLVM_LIBRARIES} ${CLANG_LIBRARIES} ${PCRE_LIBRARY} ${PCRECPP_LIBRARY} yaml-cpp)

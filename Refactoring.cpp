@@ -159,12 +159,14 @@ bool saveRewrittenFiles(Rewriter &Rewrite) {
         Rewrite.getSourceMgr().getFileEntryForID(I->first);
     std::error_code ErrorInfo;
     llvm::raw_fd_ostream FileStream( Entry->getName(), ErrorInfo, llvm::sys::fs::F_None);
-    llvm::raw_fd_ostream BackupStream(
-	    (std::string(Entry->getName()) + ".orig").c_str(), ErrorInfo, llvm::sys::fs::F_None);
+    //llvm::raw_fd_ostream BackupStream( (std::string(Entry->getName()) + ".orig").c_str(), ErrorInfo, llvm::sys::fs::F_None);
     if (ErrorInfo)
-      return false;
-    BackupStream << Rewrite.getSourceMgr().getBufferData(I->first);
-    BackupStream.flush();
+    {
+	    llvm::errs() << Entry->getName() << " " << "\n";
+	    continue;
+    }
+    //BackupStream << Rewrite.getSourceMgr().getBufferData(I->first);
+    //BackupStream.flush();
     I->second.write(FileStream);
     FileStream.flush();
   }
