@@ -40,7 +40,29 @@ ELSE(APPLE)
   SET(CMAKE_C_COMPILER clang)
   SET(CMAKE_CXX_COMPILER clang++)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  SET(CLANG_LIBRARIES clang)
+  SET(CLANG_LIBRARIES
+    LLVMCore
+    LLVMOption
+    clangTooling
+    clangFrontendTool
+    clangFrontend
+    clangDriver
+    clangSerialization
+    clangCodeGen
+    clangParse
+    clangSema
+    clangStaticAnalyzerFrontend
+    clangStaticAnalyzerCheckers
+    clangStaticAnalyzerCore
+    clangAnalysis
+    clangARCMigrate
+    clangRewrite
+    clangRewriteFrontend
+    clangEdit
+    clangAST
+    clangLex
+    clangBasic
+    clang)
 ENDIF(APPLE)
 
 FIND_PACKAGE(LLVM REQUIRED)
@@ -73,7 +95,7 @@ SET(sourcesa ${sources} main.cpp Refactoring.cpp)
 SET(sourcesb ${sources} methodMove.cpp Refactoring.cpp)
 
 ADD_EXECUTABLE (refactorial ${sourcesa} )
-TARGET_LINK_LIBRARIES (refactorial ${REQ_LLVM_LIBRARIES} ${CLANG_LIBRARIES} ${PCRE_LIBRARY} ${PCRECPP_LIBRARY} yaml-cpp)
+TARGET_LINK_LIBRARIES (refactorial ${REQ_LLVM_LIBRARIES} ${CLANG_LIBRARIES} ${PCRE_LIBRARY} ${PCRECPP_LIBRARY} yaml-cpp LLVM)
 
 ADD_EXECUTABLE (methodMove ${sourcesb} )
-TARGET_LINK_LIBRARIES (methodMove ${REQ_LLVM_LIBRARIES} ${CLANG_LIBRARIES} ${PCRE_LIBRARY} ${PCRECPP_LIBRARY} yaml-cpp)
+TARGET_LINK_LIBRARIES (methodMove ${REQ_LLVM_LIBRARIES} ${CLANG_LIBRARIES} ${PCRE_LIBRARY} ${PCRECPP_LIBRARY} yaml-cpp LLVM)
