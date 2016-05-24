@@ -40,7 +40,30 @@ ELSE(APPLE)
   SET(CMAKE_C_COMPILER clang)
   SET(CMAKE_CXX_COMPILER clang++)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  SET(CLANG_LIBRARIES clang)
+  SET(CLANG_LIBRARIES
+    LLVMCore
+    LLVMOption
+    LLVM
+    clangTooling
+    clangFrontendTool
+    clangFrontend
+    clangDriver
+    clangSerialization
+    clangCodeGen
+    clangParse
+    clangSema
+    clangStaticAnalyzerFrontend
+    clangStaticAnalyzerCheckers
+    clangStaticAnalyzerCore
+    clangAnalysis
+    clangARCMigrate
+    clangRewrite
+    clangRewriteFrontend
+    clangEdit
+    clangAST
+    clangLex
+    clangBasic
+    clang)
 ENDIF(APPLE)
 
 FIND_PACKAGE(LLVM REQUIRED)
